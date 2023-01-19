@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  cordova_dev:
+    build: CordovaDockerFile
+    container_name: cordova_dev
+    network_mode: host
+    ports:
+      - 5037:5037
+    privileged: true
+    volumes:
+      - ../mobile-app/www:/mobile-app/www
+      - ../mobile-app/res:/mobile-app/res
+      - ../mobile-app/config.xml:/mobile-app/config.xml
+      - ../mobile-app/runAndroid:/mobile-app/runAndroid
+      - /dev/bus/usb:/dev/bus/usb
+    tty: true
+    command: "/bin/bash"

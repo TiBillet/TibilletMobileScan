@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="re.tibillet.tibilletmobile" version="1.0.0" xmlns="http://www.w3.org/ns/widgets"
+        xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>TibilletMobile</name>
+    <description>Application de scan pour Tibillet</description>
+    <author email="dev@cordova.apache.org" href="https://tibillet.re">
+        Tibillet Team
+    </author>
+    <content src="index.html"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
+    <icon src="res/android/icon.png"/>
+    <splash src="res/screen/android/splash-512x512.png"/>
+    <engine name="browser" spec="6.0.0"/>
+    <plugin name="cordova-plugin-device" spec="2.1.0"/>
+    <plugin name="phonegap-nfc" spec="1.2.0"/>
+    <platform name="android">
+        <preference name="fullscreen" value="true"/>
+        <preference name="Orientation" value="portrait"/>
+        <preference name="android-minSdkVersion" value="28"/>
+        <preference name="android-targetSdkVersion" value="33"/>
+        <icon density="ldpi" src="res/android/logo-36x36.png"/>
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splash-512x512.png"/>
+        <preference name="AndroidWindowSplashScreenBackground" value="#000000"/>
+    </platform>
+    <config-file parent="/manifest" target="AndroidManifest.xml"
+                 xmlns:android="http://schemas.android.com/apk/res/android">
+        <uses-permission android:name="android.permission.CAMERA"/>
+        <uses-permission android:name="android.permission.FLASHLIGHT"/>
+        <uses-permission android:name="android.permission.NFC"/>
+    </config-file>
+</widget>

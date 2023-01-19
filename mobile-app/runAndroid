@@ -1,0 +1,7 @@
+#!/bin/bash
+cordova platform remove android \
+&& cordova plugin add phonegap-nfc \
+&& cordova plugin add cordova-plugin-device \
+&& cordova platform add android@11.0.0 \
+&& cordova build \
+&& cordova run android
