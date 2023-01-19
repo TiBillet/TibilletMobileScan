@@ -11,8 +11,7 @@ npm run build
 
 ## Tester sur un appareil android
 - Dans le dossier "Docker"
-- 
-- Lancer le conteneur "cordova_dev" et y accéder dans une console.
+- Lancer le conteneur "cordova_dev" et y accéder par une console.
 ```
 docker compose up -d
 docker exec -ti  cordova_dev bash
@@ -26,5 +25,6 @@ docker exec -ti  cordova_dev bash
 - Si erreur de signature
 ```
   adb uninstall re.tibillet.tibilletmobile
+  cordova run android
 ```
 re.tibillet.tibilletmobile = widget id du fichier config.xml
