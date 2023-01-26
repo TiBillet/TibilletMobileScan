@@ -1,6 +1,10 @@
-import {defineConfig} from 'vite'
+// Plugins
 import vue from '@vitejs/plugin-vue'
-import {resolve} from 'path'
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+
+// Utilities
+import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,10 +12,34 @@ export default defineConfig({
     outDir: '../mobile-app/www',
     minify: false // <= dev
   },
+  plugins: [
+    vue({
+      template: { transformAssetUrls }
+    }),
+    // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+    vuetify({
+      autoImport: true,
+      styles: {
+        configFile: 'src/styles/settings.scss',
+      },
+    }),
+  ],
+  define: { 'process.env': {} },
   resolve: {
     alias: {
-      "@": resolve(__dirname, "/src")
-    }
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    },
+    extensions: [
+      '.js',
+      '.json',
+      '.jsx',
+      '.mjs',
+      '.ts',
+      '.tsx',
+      '.vue',
+    ],
   },
-  plugins: [vue()],
+  server: {
+    port: 3000,
+  },
 })

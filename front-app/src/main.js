@@ -1,22 +1,20 @@
-import {createApp} from 'vue'
-import router from './router'
+/**
+ * main.js
+ *
+ * Bootstraps Vuetify and other plugins then mounts the App`
+ */
 
-import './style.css'
+// Components
 import App from './App.vue'
 
-/*
-try {
-  if (cordova) {
-    document.addEventListener('deviceready', () => {
-      const app = createApp(App)
-      app.use(router)
-      app.mount('#app')
-    }, false)
-  }
-} catch (e) {
+// Composables
+import { createApp } from 'vue'
 
- */
-  const app = createApp(App)
-  app.use(router)
-  app.mount('#app')
-// }
+// Plugins
+import { registerPlugins } from '@/plugins'
+
+const app = createApp(App)
+
+registerPlugins(app)
+
+app.mount('#app')

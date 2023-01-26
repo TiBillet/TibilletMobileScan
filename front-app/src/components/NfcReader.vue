@@ -1,7 +1,7 @@
 <template>
-  <div class="nfc-container">
-    <img class="nfc-image" :src="imageUrl" alt="logo nfc">
-    <h3 id="nfc-tag-msg">{{ message }}</h3>
+  <div class="d-flex flex-column justify-space-between align-center">
+    <v-img width="200" :src="imageUrl" alt="logo nfc"></v-img>
+    <h2 id="nfc-tag-msg" class="font-weight-bold">{{ message }}</h2>
     <h3 id="nfc-tag-msg-erreur"></h3>
   </div>
 </template>
@@ -61,16 +61,4 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.nfc-image {
-  height: 200px;
-  width: auto;
-}
-
-#nfc-tag-msg {
-  color: white;
-}
-
-#nfc-tag-msg-erreur {
-  color: orange;
-}
 </style>
