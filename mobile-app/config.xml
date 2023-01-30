@@ -7,8 +7,6 @@
         Tibillet Team
     </author>
     <content src="index.html"/>
-    <allow-intent href="http://*/*"/>
-    <allow-intent href="https://*/*"/>
     <icon src="res/android/icon.png"/>
     <splash src="res/screen/android/splash-512x512.png"/>
     <engine name="browser" spec="6.0.0"/>
