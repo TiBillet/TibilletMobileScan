@@ -4,15 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/favicon.png"/>
-  <meta http-equiv="Content-Security-Policy" content="connect-src localhost https://filaos.re/api/connect; script-src localhost; font-src 'self' https://fonts.gstatic.com/; style-src 'self' https://fonts.googleapis.com/ 'unsafe-inline';">
+  <%- meta %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Vuetify 3</title>
+  <title><%- title %></title>
+  <%- injectScript %>
 </head>
 
 <body>
   <div id="app"></div>
-  <script type="text/javascript" src="cordova.js"></script>
-  <script type="module" src="/src/main.js"></script>
+  <%- simuinfos %>
 </body>
-
 </html>
