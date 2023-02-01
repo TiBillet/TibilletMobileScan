@@ -1,11 +1,11 @@
-console.log('-> Simu cordova.js')
+// console.log('-> Simu cordova.js')
 let device = {
   uuid: ''
 }
 
 nfc = {
   enabled: (c1,c2) => {
-    console.log('-> appel nfc.enabled de monCordova.js !')
+    // console.log('-> appel nfc.enabled de monCordova.js !')
     const infos = document.querySelector('#tibillet-simu-infos')
 
     // cm, client1 client2
@@ -31,14 +31,12 @@ nfc = {
         <option value="${cm}">primaire</option>
         <option value="${client1}">client 1</option>
         <option value="${client2}">client 2</option>
+        <option value="INCONNUE">INCONNUE</option>
       </select>
     </div>`
     container.insertAdjacentHTML('afterbegin', select)
-    console.log('-> simu nfc.enabled ok !')
   },
   removeNdefListener: () => {
-    const bt = document.querySelector('#tibillet-logo-nfc')
-    bt.removeEventListener('click', simuScan, false)
     console.log('-> simu nfc.removeNdefListener ok !')
   }
 }

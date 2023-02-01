@@ -52,6 +52,7 @@ function launchNfc() {
 }
 
 onMounted(() => {
+  // TODO: demander permission utiliser nfc
   document.addEventListener('deviceready', launchNfc, false)
   // simule un deviceready (sans cordova)
   document.addEventListener('simuDeviceready', launchNfc(), false)

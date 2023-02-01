@@ -37,29 +37,28 @@ const router = useRouter()
 const env = import.meta.env
 // ref
 const {loading, dialog} = storeToRefs(useLocalStore())
-const {connection} = useLocalStore()
+const {connection, dialogActivationFalse, getLanguage} = useLocalStore()
 
 let uuidDevice = ''
-console.log('env =', env)
+dialogActivationFalse()
 
-tradConfig({language: 'fr'})
-
+tradConfig({language: getLanguage})
 
 function recepTagId(tagId) {
-  console.log('-> fonc recepTagId, tagId =', tagId)
-  connection(tagId, uuidDevice, env.VITE_API_URL_BASE)
+  // console.log('-> fonc recepTagId, tagId =', tagId)
+  connection(tagId, uuidDevice, env)
 }
 
 document.addEventListener('deviceready', () => {
   uuidDevice = device.uuid
-  console.log('uuidDevice =', uuidDevice)
+  // console.log('uuidDevice =', uuidDevice)
 }, false)
 
 // réception message "simu-some-tag-id"
 document.body.addEventListener('simu-some-tag-id', (data) => {
   uuidDevice = device.uuid
   // console.log('-> reception msg "simu-some-tag-id", data =', data.detail)
-  connection(data.detail, uuidDevice, env.VITE_API_URL_BASE)
+  connection(data.detail, uuidDevice, env)
 })
 
 </script>

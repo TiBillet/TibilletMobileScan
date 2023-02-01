@@ -9,16 +9,27 @@ const routes = [
   {
     path: '/menu',
     component: () => import('@/layouts/default/Default.vue'),
+    // Menu.vue est un composant de Default.vue
     children: [
       {
         path: '',
         name: 'Menu',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () =>  import(/* webpackChunkName: "Menu" */ '@/views/Menu.vue')
+        component: () => import(/* webpackChunkName: "Menu" */ '@/views/Menu.vue')
       },
     ],
+  },
+  {
+    path: '/scan',
+    component: () => import(/* webpackChunkName: "Scan" */ '@/views/Scan.vue')
+  },
+  {
+    path: '/ticketstatus',
+    component: () => import(/* webpackChunkName: "TicketStatus" */ '@/views/TicketStatus.vue')
+  },
+  {
+    path: '/linkcashless',
+    component: () => import(/* webpackChunkName: "LinkCashless" */ '@/views/LinkCashless.vue')
   }
 ]
 
