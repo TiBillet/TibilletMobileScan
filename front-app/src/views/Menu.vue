@@ -1,42 +1,36 @@
 <template>
-  <div class="v-main d-flex flex-column justify-space-between align-center">
-    <v-btn tile class="menu-btn">
-      {{ trad("Create a new member.")}}
+  <v-container class="d-flex flex-column align-center justify-center h-100">
+
+    <v-btn class="mt-4 mb-4" color="primary" width="46vh" height="10vh" text-transform="uppercase">
+      <div class="text-wrap text-center text-h5">{{ trad("Create a new member.") }}</div>
     </v-btn>
 
-    <v-btn tile class="menu-btn" @click="router.push('/scan')">
-      {{ trad("Scan a booking or membership.")}}
+    <v-btn class="mt-4 mb-4" to="scan" color="primary" width="46vh" height="10vh" text-transform="uppercase">
+      <div class="text-wrap text-center text-h5">{{ trad("Scan a booking or membership.") }}</div>
     </v-btn>
 
-    <v-btn tile class="menu-btn">
-      {{ trad("Sales points")}}
+    <v-btn class="mt-4 mb-4" color="primary" width="46vh" height="10vh" text-transform="uppercase">
+      <div class="text-wrap text-center text-h5">{{ trad("Sales points") }}</div>
     </v-btn>
 
-    <v-btn tile class="menu-btn">
-      {{ trad("Reload cashless card.")}}
+    <v-btn class="mt-4 mb-4" color="primary" width="46vh" height="10vh" text-transform="uppercase">
+      <div class="text-wrap text-center text-h5">{{ trad("Reload cashless card.") }}</div>
     </v-btn>
-  </div>
+
+    </v-container>
 </template>
 
 <script setup>
-import {useRouter} from 'vue-router'
+// import {useRouter} from 'vue-router'
 
-import { tradConfig, trad } from '@/plugins/translation.js'
+import {tradConfig, trad} from '@/plugins/translation.js'
 import {useLocalStore} from '@/store'
 
-const router = useRouter()
+// const router = useRouter()
 const {getLanguage} = useLocalStore()
 
 tradConfig({language: getLanguage})
 </script>
 
 <style scoped>
-.v-main {
-  width: 100%;
-  height: 100%;
-}
-.menu-btn {
-  width: 300px;
-  font-size: 1.5rem;
-}
 </style>
