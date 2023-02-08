@@ -1,10 +1,9 @@
-// Composables
 import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
     path: '/index.html',
-    component: () => import('@/views/Home.vue')
+    component: () => import('@/views/Devices.vue')
   },
   {
     path: '/menu',

@@ -66,7 +66,6 @@ export default defineConfig(({command, mode, ssrBuild}) => {
           title: 'Tibillet mobile scan DEV',
           meta: `<meta http-equiv="Content-Security-Policy" content="connect-src http://localhost:3000 ws://localhost:3000/ ws://filaos.re https://filaos.re; script-src http://localhost:3000 http://localhost:3000/@vite/client http://localhost:3000/@id/__x00__plugin-vuetify:components/VResponsive/VResponsive.sass 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com/; style-src 'self' https://fonts.googleapis.com/ 'unsafe-inline';">`,
           injectScript: '<script type="text/javascript" src="monCordova.js"></script>',
-          simuinfos: `<div id="tibillet-simu-infos" data-cm="${process.env.VITE_SIMU_TAGID_CM}" data-clt1="${process.env.VITE_SIMU_TAGID_CLIENT1}" data-clt2="${process.env.VITE_SIMU_TAGID_CLIENT2}" data-uuid="${process.env.VITE_SIMU_UUID_PERIPH}"></div>`
         }
       }
     }))
@@ -92,7 +91,6 @@ export default defineConfig(({command, mode, ssrBuild}) => {
           title: 'Tibillet mobile scan',
           meta: `<meta http-equiv="Content-Security-Policy" content="connect-src localhost https://filaos.re ws://filaos.re; script-src localhost; font-src 'self' https://fonts.gstatic.com/; style-src 'self' https://fonts.googleapis.com/ 'unsafe-inline';">`,
           injectScript: '<script type="text/javascript" src="cordova.js"></script>',
-          simuinfos: ''
         }
       }
     }))

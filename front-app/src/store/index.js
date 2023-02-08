@@ -1,8 +1,14 @@
 import {defineStore} from 'pinia'
+import {emitEvent} from '@/communs/EmitEvent.js'
 
 export const useLocalStore = defineStore('localStore', {
   state: () => ({
-    loading: false,
+    devices: [],
+    loading: {
+      activation: true,
+      color: 'primary',
+      icon: null
+    },
     language: 'fr',
     dialog: {
       activation: false,
@@ -12,11 +18,21 @@ export const useLocalStore = defineStore('localStore', {
     }
   }),
   getters: {
-    getLanguage (state) {
+    getDeviceNfcValue(state) {
+      return state.devices.find(obj => obj.name === 'nfc').value
+    },
+    getLanguage(state) {
       return state.language
     }
   },
   actions: {
+    setDevice(deviceName, value) {
+      let device = this.devices.find(obj => obj.name === deviceName)
+      device.value = value
+    },
+    setLoadingConf(options) {
+      this.loading = options
+    },
     dialogActivationFalse() {
       this.dialog.activation = false
     },
@@ -46,12 +62,12 @@ export const useLocalStore = defineStore('localStore', {
         for (let i = 0; i < retour.msg.length; i++) {
           message += '<div>' + retour.msg[i] + '</div>'
         }
-        this.dialog = {
+        emitEvent('modal-message',  {
           activation: true,
           message,
           color: 'warning',
           title: 'Attention !'
-        }
+        })
       }
     }
   },

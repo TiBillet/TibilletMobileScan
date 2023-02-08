@@ -23,7 +23,7 @@
 <script setup>
 // import {useRouter} from 'vue-router'
 
-import {tradConfig, trad} from '@/plugins/translation.js'
+import {tradConfig, trad} from '@/communs/translation.js'
 import {useLocalStore} from '@/store'
 
 // const router = useRouter()

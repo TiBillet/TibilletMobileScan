@@ -1,64 +1,48 @@
 <template>
-  <Loading v-if="loading"/>
 
-  <v-container class="fill-height">
-    <v-responsive class="d-flex align-center text-center fill-height">
-      <v-img contain height="200" src="@/assets/logo-288x288.png"/>
-      <div class="text-body-2 font-weight-light mb-n1">{{ trad('Welcome to')}}</div>
-      <h2 class="text-h2 font-weight-bold">TiBillet Coop</h2>
-      <NfcReader :message="trad('Scan your primary card.')" image-url='./images/nfc.svg' @some-tag-id="recepTagId"/>
-    </v-responsive>
+  <v-container class="d-flex flex-column align-center justify-center h-100">
+    <div class="logo-container-s2">
+      <v-img class="p-0 m-0" width="12rem" contain src="@/assets/logo-288x288.png"/>
+    </div>
+    <div class="text-body-2 font-weight-light mb-n1">{{ trad('Welcome to') }}</div>
+    <h2 class="text-h3 font-weight-bold text-wrap text-center">TiBillet Coop</h2>
   </v-container>
-
-
-  <v-dialog v-model="dialog.activation" transition="dialog-top-transition">
-    <v-card>
-      <v-toolbar :color="dialog.color" :title="dialog.title"></v-toolbar>
-      <v-card-text v-html="dialog.message">
-      </v-card-text>
-      <v-card-actions class="justify-end">
-        <v-btn variant="text" @click="dialog.activation = false; dialog.message = ''">Close</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <v-footer class="d-flex flex-column align-center justify-center">
+    <NfcReader v-if="deviceNfc.type !== 'inconnu'" :message="trad('Scan your primary card.')"
+               image-url='./images/nfc.svg' @some-tag-id="recepTagId"/>
+  </v-footer>
 </template>
 
 <script setup>
-import {useRouter} from 'vue-router'
+// console.log('-> Home.vue')
 import {storeToRefs} from 'pinia'
 import {useLocalStore} from '@/store'
-import { tradConfig, trad } from '@/plugins/translation.js'
+import {tradConfig, trad} from '@/communs/translation.js'
 
 // composants
 import NfcReader from "@/components/NfcReader.vue"
-import Loading from '@/components/Loading.vue'
 
-const router = useRouter()
 const env = import.meta.env
+
 // ref
-const {loading, dialog} = storeToRefs(useLocalStore())
-const {connection, dialogActivationFalse, getLanguage} = useLocalStore()
+const {loading, deviceNfc} = storeToRefs(useLocalStore())
 
-let uuidDevice = ''
-dialogActivationFalse()
-
-tradConfig({language: getLanguage})
+const {connection, getLanguage} = useLocalStore()
 
 function recepTagId(tagId) {
-  // console.log('-> fonc recepTagId, tagId =', tagId)
+  const uuidDevice = deviceNfc.value.uuid
+  console.log('-> fonc recepTagId, tagId =', tagId, '  --  uuidDevice =', uuidDevice)
   connection(tagId, uuidDevice, env)
 }
 
-document.addEventListener('deviceready', () => {
-  uuidDevice = device.uuid
-  // console.log('uuidDevice =', uuidDevice)
-}, false)
-
-// réception message "simu-some-tag-id"
-document.body.addEventListener('simu-some-tag-id', (data) => {
-  uuidDevice = device.uuid
-  // console.log('-> reception msg "simu-some-tag-id", data =', data.detail)
-  connection(data.detail, uuidDevice, env)
-})
-
+tradConfig({language: getLanguage})
 </script>
+
+<style>
+.logo-container-s2 {
+  height: 12rem;
+  width: 12rem;
+  margin: 0;
+  overflow: hidden;
+}
+</style>

@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 # base
-RUN apt update \
+RUN apt-get update \
     && apt-get install curl wget unzip sudo nano iputils-ping gcc g++ make apt-transport-https -yq
 
 # java

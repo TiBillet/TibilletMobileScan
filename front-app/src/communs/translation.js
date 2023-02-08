@@ -11,7 +11,20 @@ const tradData = {
     {"Qrcode Ticket Scanner.": "Scanner Qrcode du billet."},
     {"Scanner nfc card.": "Scanner carte nfc."},
     {"Return": "Retour"},
-    {"New scan": "Nouveau scanne"}
+    {"New scan": "Nouveau scanne"},
+    {"Activate your network.": "Activer votre réseau."},
+    {"Enable NFC !": "Activer le NFC !"},
+    {"No NFC !": "Pas de NFC !"},
+    {"NFC permission is not turned on !": "NFC n’est pas activée !"},
+    {"Check the devices !": "Vérification des périphériques !"},
+    {"Network": "Réseau"},
+    {"The network is activated !": "Le réseau est activé !"},
+    {"Enabled.": "Activé."},
+    {"NFC activation time exceeded, restart application !": "Temps d'activation du NFC dépassé, relancer l'application !"},
+    {"Error.": "Erreur."},
+    {"Camera locked in !": "Caméra bloquée !"},
+    {"Camera": "Caméra"},
+    {"Network activation time exceeded, restart the application !": "Temps d'activation du réseau dépassé, relancer l'application !"}
   ],
   de: [
     {"Scan your primary card.": "Scannen Sie Ihre primäre Karte."},
@@ -25,7 +38,20 @@ const tradData = {
     {"Qrcode Ticket Scanner.": "Qrcode Ticket Scanner"},
     {"Scanner nfc card.": "Scanner nfc card."},
     {"Return": "zurück"},
-    {"New scan": "Neuen Scan"}
+    {"New scan": "Neuen Scan"},
+    {"Activate your network.": "Activer votre réseau."},
+    {"Enable NFC !": "NFC aktivieren !"},
+    {"No NFC !": "Kein NFC !"},
+    {"NFC permission is not turned on !": "NFC-Berechtigung ist nicht aktiviert !"},
+    {"Check the devices !": "Überprüfen Sie die Geräte!"},
+    {"Network": "Network"},
+    {"The network is activated !": "Das Netzwerk ist aktiviert !"},
+    {"Enabled.": "Aktiviert."},
+    {"NFC activation time exceeded, restart application !": "NFC-Aktivierungszeit überschritten, Anwendung neu starten !"},
+    {"Error.": "Fehler."},
+    {"Camera locked in !": "Kamera gesperrt !"},
+    {"Camera": "Camera"},
+    {"Network activation time exceeded, restart the application !": "Netzwerkaktivierungszeit überschritten, Anwendung neu starten!"}
   ]
 }
 
