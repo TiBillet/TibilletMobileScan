@@ -3,9 +3,9 @@ import {emitEvent} from '@/communs/EmitEvent.js'
 
 export const useLocalStore = defineStore('localStore', {
   state: () => ({
-    devices: [],
+    devices: {},
     loading: {
-      activation: true,
+      activation: false,
       color: 'primary',
       icon: null
     },
@@ -26,9 +26,8 @@ export const useLocalStore = defineStore('localStore', {
     }
   },
   actions: {
-    setDevice(deviceName, value) {
-      let device = this.devices.find(obj => obj.name === deviceName)
-      device.value = value
+    updateDevices(value) {
+      this.devices = value
     },
     setLoadingConf(options) {
       this.loading = options

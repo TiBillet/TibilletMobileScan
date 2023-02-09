@@ -21,12 +21,9 @@
 </template>
 
 <script setup>
-// import {useRouter} from 'vue-router'
-
 import {tradConfig, trad} from '@/communs/translation.js'
 import {useLocalStore} from '@/store'
 
-// const router = useRouter()
 const {getLanguage} = useLocalStore()
 
 tradConfig({language: getLanguage})

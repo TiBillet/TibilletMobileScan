@@ -1,6 +1,6 @@
 <template>
-  <!--
   <Loading v-if="loading.activation" :icon="loading.icon" :color="loading.color" :text="loading.text"/>
+
 
   <v-dialog v-model="messageModal.activation" transition="dialog-top-transition">
     <v-card>
@@ -12,25 +12,33 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  -->
-   <v-app>
+
+  <v-app>
     <router-view/>
   </v-app>
 </template>
 
 <script setup>
 // composants
-// import Loading from '@/components/Loading.vue'
+import Loading from '@/components/Loading.vue'
 
-/*
 import {ref} from "vue"
 import {io} from 'socket.io-client'
 import {tradConfig, trad} from '@/communs/translation.js'
+import {storeToRefs} from 'pinia'
+import {useLocalStore} from '@/store'
 
-const {loading, dialog, allDevicesOn} = storeToRefs(useLocalStore())
+const {loading} = storeToRefs(useLocalStore())
 const serverSocketIo = import.meta.env.VITE_API_URL_BASE
 const socket = io(serverSocketIo)
-const {setLoadingConf, setDeviceNfc, getLanguage,} = useLocalStore()
+const store = useLocalStore()
+
+// reset store
+store.$reset()
+
+const {getLanguage} = store
+
+
 
 // ref
 let messageModal = ref({
@@ -41,69 +49,6 @@ let messageModal = ref({
 })
 
 tradConfig({language: getLanguage})
-
-// affichage icon de chargemement spécifique à la détermination du type de périphérique
-setLoadingConf({
-  activation: true,
-  color: 'yellow',
-  icon: 'mdi-devices'
-})
-
-
-function checkInternet() {
-  //const networkState = navigator.connection.type
-  // console.log('networkState =', networkState)
-
-  // offline, active le modal
-  document.addEventListener("offline", () => {
-    setLoadingConf({
-      activation: true,
-      color: 'red',
-      icon: 'mdi-network-off-outline',
-      text: trad('Activate your network.')
-    })
-  }, false)
-
-  // online, supprime le modal
-  document.addEventListener("online", () => {
-    setLoadingConf({
-      activation: false,
-      color: 'prymary',
-      icon: ''
-    })
-  }, false)
-}
-
-// détermination du type de périphérique (mobile, simu)
-try {
-  if (cordova) {
-    document.addEventListener('deviceready', () => {
-      setLoadingConf({
-        activation: false,
-        color: 'prymary',
-        icon: ''
-      })
-      setDeviceNfc({
-        type: 'mobile',
-        uuid: device.uuid
-      })
-      checkInternet()
-    }, false)
-  }
-} catch (e) {
-  setLoadingConf({
-    activation: false,
-    color: 'prymary',
-    icon: ''
-  })
-  const deviceType = import.meta.env.VITE_DEVICE_NFC === 'simu' ? 'simu' : 'inconnu'
-  const uuid = import.meta.env.VITE_DEVICE_NFC === 'simu' ? import.meta.env.VITE_SIMU_UUID_DEVICE : ''
-  setDeviceNfc({
-    type: deviceType,
-    uuid
-  })
-  checkInternet('deviceType')
-}
 
 // écoute venant de "emitEvent"
 document.body.addEventListener('modal-message', (data) => {
@@ -119,12 +64,7 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
   console.log('-> deconnexion socket.io', socket.id)
 })
- */
+
 </script>
 
-<style>
-#app50 {
-  width: 100vw;
-  height: 100vh;
-}
-</style>
+<style></style>

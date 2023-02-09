@@ -6,22 +6,10 @@
         <div>{{ trad('Check the devices !') }}</div>
       </div>
     </v-progress-circular>
-    <!-- network -->
-    <div class="d-flex flex-row">
-      <div :style="{backgroundColor: deviceNetwork.activation === true ? 'green' : 'red'}">{{ trad('Network') }}</div>
-      <div>{{ deviceNetwork.text }}</div>
-    </div>
-
-    <!-- nfc -->
-    <div class="d-flex flex-row">
-      <div :style="{backgroundColor: deviceNfc.activation === true ? 'green' : 'red'}">Nfc</div>
-      <div>{{ deviceNfc.text }}</div>
-    </div>
-
-    <!-- camera -->
-    <div class="d-flex flex-row">
-      <div :style="{backgroundColor: deviceCamera.activation === true ? 'green' : 'red'}">{{ trad('Camera') }}</div>
-      <div>{{ deviceCamera.text }}</div>
+    <!-- devices -->
+    <div v-for="(item, index) in devices" :key="index" class="d-flex flex-row">
+      <div :style="{backgroundColor: item.activation === true ? 'green' : 'red'}">{{ trad(index) }}</div>
+      <div>{{ item.text }}</div>
     </div>
 
   </v-container>
@@ -31,68 +19,86 @@
 import {ref, onMounted} from "vue"
 import {tradConfig, trad} from '@/communs/translation.js'
 import {useLocalStore} from '@/store'
+import {useRouter} from 'vue-router'
 
+const router = useRouter()
+const {updateDevices} = useLocalStore()
 const env = import.meta.env
 const {getLanguage} = useLocalStore()
-
-
-let deviceNetwork = ref({
-  activation: false,
-  text: '?',
-  nbTest: 0
-})
-let deviceNfc = ref({
-  activation: false,
-  type: 'inconnu',
-  text: '?',
-  uuid: '?',
-  nbTest: 0
-})
-let deviceCamera = ref({
-  activation: false,
-  text: '?'
-})
 let color = ref('green')
+let devices = ref({
+  Network: {
+    activation: false,
+    text: '?',
+    nbTest: 0
+  },
+  Nfc: {
+    activation: false,
+    type: 'inconnu',
+    text: '?',
+    uuid: '?',
+    nbTest: 0
+  },
+  Camera: {
+    activation: false,
+    text: '?'
+  }
+})
 
 tradConfig({language: getLanguage})
 
-function launchApp() {
-  console.log('réseau =', deviceNetwork.value.activation)
-  console.log('nfc =', deviceNfc.value.activation)
-  console.log('caméra =', deviceCamera.value.activation)
+function testAllDevicesEnabled() {
+  const devicesValues = devices.value
+  const nbTotalActivationFind = Object.keys(devicesValues).length
+  let nbTotalActivationTest = 0
+  for (const devicesKey in devicesValues) {
+    const obj = devicesValues[devicesKey]
+    if (obj.activation === true) {
+      nbTotalActivationTest++
+    }
+  }
+
+  if (nbTotalActivationFind === nbTotalActivationTest) {
+    // save state devices
+    updateDevices(devices.value)
+    console.log("--> lancer l'application !")
+    router.push('/keycard')
+  }
 }
 
-// etape 3, check camera
+// --- camera ---
 function requestPermissionErrorCamera() {
-  deviceCamera.value.activation = false
-  deviceCamera.value.text = trad('Camera locked in !')
+  const deviceCamera = devices.value.Camera
+  deviceCamera.activation = false
+  deviceCamera.text = trad('Camera locked in !')
 }
 
 function checkCameraDesktop() {
-  console.log('-> checkPermissionCameraDesktop !')
   navigator.mediaDevices.getUserMedia({audio: false, video: true}).then(function (stream) {
-    deviceCamera.value.activation = true
-    deviceCamera.value.text = trad('Enabled.')
-    launchApp()
+    const deviceCamera = devices.value.Camera
+    deviceCamera.activation = true
+    deviceCamera.text = trad('Enabled.')
+
+    testAllDevicesEnabled()
   }).catch(function (error) {
     console.log('Camera:', error)
     requestPermissionErrorCamera()
   })
 }
 
-
 function requestPermissionSuccessCamera(status) {
   if (!status.hasPermission) {
     requestPermissionErrorCamera()
   } else {
-     deviceCamera.value.activation = true
-    deviceCamera.value.text = trad('Enabled.')
-    launchApp()
+    const deviceCamera = devices.value.Camera
+    deviceCamera.activation = true
+    deviceCamera.text = trad('Enabled.')
+
+    testAllDevicesEnabled()
   }
 }
 
 function checkCamera(device) {
-  console.log('-> fonc checkCamera,', device)
   try {
     if (device === 'simu') {
       checkCameraDesktop()
@@ -106,34 +112,40 @@ function checkCamera(device) {
   }
 }
 
-// etape 2, check NFC
+// --- NFC ---
 function informedNfcMobileActivation() {
-  deviceNfc.value.activation = true
-  deviceNfc.value.type = 'mobile'
-  deviceNfc.value.text = trad('Enabled.')
-  deviceNfc.value.uuid = device.uuid
-  checkCamera('mobile')
+  const deviceNfc = devices.value.Nfc
+  deviceNfc.activation = true
+  deviceNfc.type = 'mobile'
+  deviceNfc.text = trad('Enabled.')
+  deviceNfc.uuid = device.uuid
+
+  testAllDevicesEnabled()
 }
 
 function informedNfcMobileActivationNone(error) {
-  deviceNfc.value.activation = false
-  deviceNfc.value.type = 'mobile'
-  deviceNfc.value.text = trad('Enable NFC !')
-  deviceNfc.value.uuid = device.uuid
-  console.log('deviceNfc =', deviceNfc.value)
+  const deviceNfc = devices.value.Nfc
+  deviceNfc.activation = false
+  deviceNfc.type = 'mobile'
+  deviceNfc.text = trad('Enable NFC !')
+  deviceNfc.uuid = device.uuid
+
   // attente activation nfc
-  deviceNfc.value.nbTest = deviceNfc.value.nbTest + 1
-  if (deviceNfc.value.nbTest < 250) {
+  deviceNfc.nbTest = deviceNfc.nbTest + 1
+
+  // TODO: insérer un bouton pour afficher la vue d'activation du nfc
+  // if (deviceNfc.nbTest === 1) { nfc.showSettings() }
+
+  if (deviceNfc.nbTest < 250) {
     setTimeout(() => {
       nfc.enabled(informedNfcMobileActivation, informedNfcMobileActivationNone)
     }, 1000, device)
   } else {
-    deviceNfc.value.text = trad('NFC activation time exceeded, restart application !')
+    deviceNfc.text = trad('NFC activation time exceeded, restart application !')
   }
 }
 
 function checkNfc(device) {
-  console.log('-> fonc checkNfc !')
   // nfc mobile
   if (device === 'mobile') {
     console.log('device =', device)
@@ -142,78 +154,75 @@ function checkNfc(device) {
 
   // simu nfc on desktop
   if (device === 'simu') {
-    console.log('device =', device)
-    deviceNfc.value.activation = true
-    deviceNfc.value.type = 'simu'
-    deviceNfc.value.text = trad('Enabled.')
-    deviceNfc.value.uuid = env.VITE_SIMU_UUID_DEVICE
-    checkCamera(device)
+    const deviceNfc = devices.value.Nfc
+    deviceNfc.activation = true
+    deviceNfc.type = 'simu'
+    deviceNfc.text = trad('Enabled.')
+    deviceNfc.uuid = env.VITE_SIMU_UUID_DEVICE
+
+    testAllDevicesEnabled()
   }
 }
 
 
-// etape 1, network
-function testOnlineMobile() {
-  const statusNetwork = navigator.connection.type
-  console.log('-> deviceready, statusNetwork =', statusNetwork, '  --  type =', typeof (statusNetwork))
-  if (statusNetwork === 'none') {
-    offline('mobile')
-  } else {
-    online('mobile')
-  }
-}
-
-function testOnlineSimu() {
-  if (navigator.onLine === false) {
-    offline('simu')
-  } else {
-    online('simu')
-  }
-}
-
+// --- network ---
 function offline(device) {
-  console.log('-> offline, device =', device)
-  deviceNetwork.value.activation = false
-  deviceNetwork.value.text = trad('Activate your network.')
-  console.log('deviceNetwork =', deviceNetwork.value)
+  const deviceNetwork = devices.value.Network
+  deviceNetwork.activation = false
+  deviceNetwork.text = trad('Activate your network.')
   // attente activation network
-  deviceNetwork.value.nbTest = deviceNetwork.value.nbTest + 1
-  if (deviceNetwork.value.nbTest < 250) {
+  deviceNetwork.nbTest = deviceNetwork.nbTest + 1
+  if (deviceNetwork.nbTest < 250) {
     setTimeout(() => {
-      if (device === 'mobile') {
-        testOnlineMobile()
-      }
-      if (device === 'simu') {
-        testOnlineSimu()
-      }
+      testOnline(device)
     }, 1000, device)
   } else {
-    deviceNetwork.value.text = trad('Network activation time exceeded, restart the application !')
+    deviceNetwork.text = trad('Network activation time exceeded, restart the application !')
   }
 }
 
 function online(device) {
-  console.log('-> online, device =', device)
-  deviceNetwork.value.activation = true
-  deviceNetwork.value.text = trad('The network is activated !')
-  checkNfc(device)
+  const deviceNetwork = devices.value.Network
+  deviceNetwork.activation = true
+  deviceNetwork.text = trad('The network is activated !')
+
+  testAllDevicesEnabled()
 }
 
+function testOnline(device) {
+  let statusNetwork
+  if (device === 'mobile') {
+    statusNetwork = navigator.connection.type
+  } else { // desktop
+    statusNetwork = navigator.onLine
+  }
+
+  if (statusNetwork === 'none' || statusNetwork === false) {
+    offline(device)
+  } else {
+    online(device)
+  }
+}
+
+// launch tests
+function Tests(device) {
+  testOnline(device)
+  checkNfc(device)
+  checkCamera(device)
+}
+
+// enter point
 onMounted(() => {
-  // etape 1, check network
   try {
     if (cordova) { // cordova / mobile
       document.addEventListener('deviceready', () => {
-        testOnlineMobile()
+        Tests('mobile')
       })
     }
   } catch (e) {  // desktop / simu
-    testOnlineSimu()
+    Tests('simu')
   }
 })
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

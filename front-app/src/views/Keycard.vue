@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-// console.log('-> Home.vue')
+// console.log('-> Keycard.vue')
 import {storeToRefs} from 'pinia'
 import {useLocalStore} from '@/store'
 import {tradConfig, trad} from '@/communs/translation.js'

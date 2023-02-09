@@ -6,6 +6,10 @@ const routes = [
     component: () => import('@/views/Devices.vue')
   },
   {
+    path: '/keycard',
+    component: () => import(/* webpackChunkName: "Keycard" */ '@/views/Keycard.vue')
+  },
+  {
     path: '/menu',
     component: () => import('@/layouts/default/Default.vue'),
     // Menu.vue est un composant de Default.vue
