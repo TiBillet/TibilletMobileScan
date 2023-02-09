@@ -1,18 +1,34 @@
 <template>
-  <v-container class="d-flex flex-column align-center justify-center h-100">
-    <v-progress-circular :color="color" indeterminate size="300" width="8">
-      <div class="d-flex flex-column align-center">
-        <v-icon icon="mdi-state-machine" size="64"></v-icon>
-        <div>{{ trad('Check the devices !') }}</div>
-      </div>
-    </v-progress-circular>
-    <!-- devices -->
-    <div v-for="(item, index) in devices" :key="index" class="d-flex flex-row">
-      <div :style="{backgroundColor: item.activation === true ? 'green' : 'red'}">{{ trad(index) }}</div>
-      <div>{{ item.text }}</div>
-    </div>
+  <v-app-bar color="primary" density="compact">
+    <v-app-bar-title>{{ trad('Check the devices !') }}</v-app-bar-title>
 
-  </v-container>
+  </v-app-bar>
+  <v-main>
+    <v-container class="d-flex flex-column align-center justify-center h-100">
+      <v-progress-circular :color="color" indeterminate size="200" width="8">
+        <div class="d-flex flex-column align-center">
+          <v-icon icon="mdi-cog-outline" size="64"></v-icon>
+          <!-- <div>{{ trad('Check the devices !') }}</div> -->
+        </div>
+      </v-progress-circular>
+      <!-- devices -->
+      <v-timeline density="compact" side="end">
+        <v-timeline-item v-for="(item, index) in devices" :key="index"
+                         :dot-color="item.activation === true ? 'green' : 'red'"
+                         size="large">
+          <template v-slot:icon>
+            <v-icon :icon="getIcon(item)"></v-icon>
+          </template>
+          <div>
+            <div class="text-h6">{{ trad(index) }}</div>
+            <p>
+              {{ item.text }}
+            </p>
+          </div>
+        </v-timeline-item>
+      </v-timeline>
+    </v-container>
+  </v-main>
 </template>
 
 <script setup>
@@ -30,23 +46,37 @@ let devices = ref({
   Network: {
     activation: false,
     text: '?',
-    nbTest: 0
+    nbTest: 0,
+    icons: ['mdi-network-outline', 'mdi-network-off-outline']
   },
   Nfc: {
     activation: false,
     type: 'inconnu',
     text: '?',
     uuid: '?',
-    nbTest: 0
+    nbTest: 0,
+    icons: ['mdi-nfc-variant', 'mdi-nfc-variant-off']
   },
   Camera: {
     activation: false,
-    text: '?'
+    text: '?',
+    icons: ['mdi-camera-outline', 'mdi-camera-off-outline']
   }
 })
 
 tradConfig({language: getLanguage})
 
+function getIcon(item) {
+  let index
+  if (item.activation === true) {
+    index = 0
+  } else {
+    index = 1
+  }
+  return item.icons[index]
+}
+
+// route
 function testAllDevicesEnabled() {
   const devicesValues = devices.value
   const nbTotalActivationFind = Object.keys(devicesValues).length
@@ -62,7 +92,7 @@ function testAllDevicesEnabled() {
     // save state devices
     updateDevices(devices.value)
     console.log("--> lancer l'application !")
-    router.push('/keycard')
+    //router.push('/keycard')
   }
 }
 
