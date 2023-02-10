@@ -1,21 +1,12 @@
 <template>
-  <v-app-bar color="primary" density="compact">
-    <v-app-bar-title>{{ trad('Check the devices !') }}</v-app-bar-title>
-
-  </v-app-bar>
   <v-main>
-    <v-container class="d-flex flex-column align-center justify-center h-100">
-      <v-progress-circular :color="color" indeterminate size="200" width="8">
-        <div class="d-flex flex-column align-center">
-          <v-icon icon="mdi-cog-outline" size="64"></v-icon>
-          <!-- <div>{{ trad('Check the devices !') }}</div> -->
-        </div>
-      </v-progress-circular>
+    <v-container fluid class="text-center">
+
+      <h2 class="mb-4">{{ trad('Check the devices') }}</h2>
       <!-- devices -->
-      <v-timeline density="compact" side="end">
+      <v-timeline  side="end" align="start">
         <v-timeline-item v-for="(item, index) in devices" :key="index"
-                         :dot-color="item.activation === true ? 'green' : 'red'"
-                         size="large">
+                         :dot-color="item.activation === true ? 'green' : 'red'">
           <template v-slot:icon>
             <v-icon :icon="getIcon(item)"></v-icon>
           </template>
@@ -27,6 +18,12 @@
           </div>
         </v-timeline-item>
       </v-timeline>
+
+       <v-progress-circular :color="color" indeterminate size="100" width="8" class="mt-4">
+        <div class="d-flex flex-column align-center">
+          <v-icon icon="mdi-cog-outline" size="64"></v-icon>
+        </div>
+      </v-progress-circular>
     </v-container>
   </v-main>
 </template>
@@ -40,8 +37,8 @@ import {useRouter} from 'vue-router'
 const router = useRouter()
 const {updateDevices} = useLocalStore()
 const env = import.meta.env
-const {getLanguage} = useLocalStore()
-let color = ref('green')
+const {getLanguage, getTheme} = useLocalStore()
+let color = ref('red')
 let devices = ref({
   Network: {
     activation: false,
@@ -91,9 +88,14 @@ function testAllDevicesEnabled() {
   if (nbTotalActivationFind === nbTotalActivationTest) {
     // save state devices
     updateDevices(devices.value)
-    console.log("--> lancer l'application !")
-    //router.push('/keycard')
+    // lancer l'application
+    router.push('/keycard')
   }
+
+  // 3 niveaux(basé sur le tableau de couleurs) d'avancement d'initialisation des périphériques
+  const colors = ['notUse', 'orange', 'yellow', 'green']
+  const currentPart = nbTotalActivationTest * (nbTotalActivationFind / (colors.length - 1))
+  color.value = colors[currentPart]
 }
 
 // --- camera ---
@@ -123,7 +125,6 @@ function requestPermissionSuccessCamera(status) {
     const deviceCamera = devices.value.Camera
     deviceCamera.activation = true
     deviceCamera.text = trad('Enabled.')
-
     testAllDevicesEnabled()
   }
 }

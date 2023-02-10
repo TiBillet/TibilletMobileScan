@@ -1,9 +1,10 @@
 <template>
-
-  <v-btn class="mb-10" @click="activeDialogQrCode()" color="primary" width="46vh" height="10vh" text-transform="uppercase">
-    <v-icon icon="mdi-qrcode-scan" left></v-icon>
-    <span>{{ message }}</span>
-  </v-btn>
+  <v-card max-width="400" >
+    <v-card-text class="d-flex flex-column justify-space-between align-center">
+      <v-icon icon="mdi-qrcode-scan" color="primary" size="150" @click="activeDialogQrCode()"></v-icon>
+      <h2 class="text-h6">{{ message }}</h2>
+    </v-card-text>
+  </v-card>
   <v-dialog v-model="dialogQrCode" v-bind="checkPermissionCamera()">
     <v-card>
       <v-card-title>{{ message }}</v-card-title>
@@ -12,10 +13,11 @@
       </v-card-text>
     </v-card>
   </v-dialog>
+
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 import {Html5Qrcode} from "html5-qrcode"
 
 const props = defineProps({
@@ -45,7 +47,7 @@ function stopScanQrCode() {
 
 function onScanSuccess(qrCodeMessage, decodedResult) {
   console.log('-> fonc onScanSuccess, qrCodeMessage =', qrCodeMessage)
-   stopScanQrCode()
+  stopScanQrCode()
   emits('someQrCode', qrCodeMessage)
 }
 

@@ -3,16 +3,31 @@ import {createRouter, createWebHistory} from 'vue-router'
 const routes = [
   {
     path: '/index.html',
-    component: () => import('@/views/Devices.vue')
+    component: () => import('@/layouts/input/Input.vue'),
+    children: [
+      {
+        path: '',
+        name: 'devices',
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "Devices" */ '@/views/Devices.vue')
+      },
+    ]
   },
   {
     path: '/keycard',
-    component: () => import(/* webpackChunkName: "Keycard" */ '@/views/Keycard.vue')
+    component: () => import('@/layouts/input/Input.vue'),
+    children: [
+      {
+      path: '',
+      name: 'keycard',
+      component: () => import(/* webpackChunkName: "Keycard" */ '@/views/Keycard.vue')
+    },
+    ]
   },
   {
     path: '/menu',
     component: () => import('@/layouts/default/Default.vue'),
-    // Menu.vue est un composant de Default.vue
+    // Menu.vue est un composant de Input.vue
     children: [
       {
         path: '',

@@ -16,7 +16,7 @@ const tradData = {
     {"Enable NFC !": "Activer le NFC !"},
     {"No NFC !": "Pas de NFC !"},
     {"NFC permission is not turned on !": "NFC n’est pas activée !"},
-    {"Check the devices !": "Vérification des périphériques !"},
+    {"Check the devices": "Vérification des périphériques"},
     {"Network": "Réseau"},
     {"The network is activated !": "Le réseau est activé !"},
     {"Enabled.": "Activé."},
@@ -24,7 +24,8 @@ const tradData = {
     {"Error.": "Erreur."},
     {"Camera locked in !": "Caméra bloquée !"},
     {"Camera": "Caméra"},
-    {"Network activation time exceeded, restart the application !": "Temps d'activation du réseau dépassé, relancer l'application !"}
+    {"Network activation time exceeded, restart the application !": "Temps d'activation du réseau dépassé, relancer l'application !"},
+    {"Theme": "Thème"}
   ],
   de: [
     {"Scan your primary card.": "Scannen Sie Ihre primäre Karte."},
@@ -43,7 +44,7 @@ const tradData = {
     {"Enable NFC !": "NFC aktivieren !"},
     {"No NFC !": "Kein NFC !"},
     {"NFC permission is not turned on !": "NFC-Berechtigung ist nicht aktiviert !"},
-    {"Check the devices !": "Überprüfen Sie die Geräte!"},
+    {"Check the devices": "Überprüfen Sie die Geräte"},
     {"Network": "Network"},
     {"The network is activated !": "Das Netzwerk ist aktiviert !"},
     {"Enabled.": "Aktiviert."},
@@ -51,7 +52,8 @@ const tradData = {
     {"Error.": "Fehler."},
     {"Camera locked in !": "Kamera gesperrt !"},
     {"Camera": "Camera"},
-    {"Network activation time exceeded, restart the application !": "Netzwerkaktivierungszeit überschritten, Anwendung neu starten!"}
+    {"Network activation time exceeded, restart the application !": "Netzwerkaktivierungszeit überschritten, Anwendung neu starten!"},
+    {"Theme": "Thema"}
   ]
 }
 

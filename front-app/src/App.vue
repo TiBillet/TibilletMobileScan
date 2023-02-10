@@ -1,7 +1,6 @@
 <template>
   <Loading v-if="loading.activation" :icon="loading.icon" :color="loading.color" :text="loading.text"/>
 
-
   <v-dialog v-model="messageModal.activation" transition="dialog-top-transition">
     <v-card>
       <v-toolbar :color="messageModal.color" :title="messageModal.title"></v-toolbar>
@@ -12,8 +11,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-
-  <v-app>
+  <v-app :theme="theme">
     <router-view/>
   </v-app>
 </template>
@@ -38,12 +36,11 @@ store.$reset()
 
 const {getLanguage} = store
 
-
-
 // ref
+let theme = ref('light')
 let messageModal = ref({
   activation: false,
-  color: 'orange',
+  color: 'primary',
   title: '',
   message: ''
 })
@@ -56,6 +53,11 @@ document.body.addEventListener('modal-message', (data) => {
   messageModal.value = data.detail
 })
 
+document.body.addEventListener('change-theme-input', (data) => {
+  theme.value = theme.value === 'light' ? 'dark' : 'light'
+})
+
+
 // écoute websocket
 socket.on("connect", () => {
   console.log('-> connexion socket.io', socket.id)
@@ -64,7 +66,6 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
   console.log('-> deconnexion socket.io', socket.id)
 })
-
 </script>
 
 <style></style>

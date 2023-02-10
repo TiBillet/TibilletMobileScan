@@ -3,6 +3,7 @@ import {emitEvent} from '@/communs/EmitEvent.js'
 
 export const useLocalStore = defineStore('localStore', {
   state: () => ({
+    theme: 'light',
     devices: {},
     loading: {
       activation: false,
@@ -18,8 +19,11 @@ export const useLocalStore = defineStore('localStore', {
     }
   }),
   getters: {
-    getDeviceNfcValue(state) {
-      return state.devices.find(obj => obj.name === 'nfc').value
+    getTheme(state) {
+      return state.theme
+    },
+    getDeviceNfc(state) {
+      return state.devices.Nfc
     },
     getLanguage(state) {
       return state.language
@@ -29,16 +33,14 @@ export const useLocalStore = defineStore('localStore', {
     updateDevices(value) {
       this.devices = value
     },
-    setLoadingConf(options) {
-      this.loading = options
-    },
     dialogActivationFalse() {
       this.dialog.activation = false
     },
-    async connection(tagId, uuid, env) {
+    async connection(tagId, env) {
       const urlBase = env.VITE_API_URL_BASE
       const user = env.VITE_USER
       const password = env.VITE_PASSWORD
+      const uuid = this.devices.Nfc.uuid
       const body = JSON.stringify({tagId, uuid, user, password})
 
       const options = {
@@ -61,7 +63,7 @@ export const useLocalStore = defineStore('localStore', {
         for (let i = 0; i < retour.msg.length; i++) {
           message += '<div>' + retour.msg[i] + '</div>'
         }
-        emitEvent('modal-message',  {
+        emitEvent('modal-message', {
           activation: true,
           message,
           color: 'warning',
