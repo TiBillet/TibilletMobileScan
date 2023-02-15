@@ -4,10 +4,19 @@
 https://github.com/TiBillet/TibilletMobileScan
 
 ## Votre code vue dans "front-app"
+- Installer les dépendences
+```
+npm i
+```
+
 - Modifier votre code   
 - Transpiler :
 ```
 npm run build
+```
+- Tester l'app sur un navigateur de bureau (http://localhost/index.html)
+```
+npm run dev
 ```
 
 ## Tester sur un appareil android
