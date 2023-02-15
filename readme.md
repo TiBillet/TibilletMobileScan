@@ -3,7 +3,7 @@
 ## cloner le projet
 https://github.com/TiBillet/TibilletMobileScan
 
-## Votre code vue dans "front-app"
+## Votre code vue dans "TibilletMobileScan/front-app" 
 - Installer les dépendences
 ```
 npm i
@@ -19,8 +19,7 @@ npm run build
 npm run dev
 ```
 
-## Tester sur un appareil android
-- Dans le dossier "Docker"
+## Tester sur un appareil android dans "TibilletMobileScan/Docker"
 - Lancer le conteneur "cordova_dev" et y accéder par une console.
 ```
 docker compose up -d
@@ -29,7 +28,7 @@ docker exec -ti  cordova_dev bash
 
 - Une fois dans le conteneur, lancer le buil et l'installation de l'application
 ```
-./runAndroid
+cordova run android
 ```
 
 - Si erreur de signature
@@ -38,6 +37,14 @@ docker exec -ti  cordova_dev bash
   cordova run android
 ```
 re.tibillet.tibilletmobile = widget id du fichier config.xml
+- 
+- Si votre mobile n'est pas reconnu :   
+. mobile en mode dévellopeur / activer l'usb   
+. débrancher/ brancher votre mobile et autoriser l'accès à l'ordi   
+. vérifier votre connxion mobile   
+```
+adb devices
+```
 
 ## Sécurité (Content Security Policy, tag 'meta' dans index.html)
 content:   
