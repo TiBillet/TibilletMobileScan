@@ -3,7 +3,12 @@
 ## cloner le projet
 https://github.com/TiBillet/TibilletMobileScan
 
-## Votre code vue dans "TibilletMobileScan/front-app" 
+## Votre code vue/vuetify dans "TibilletMobileScan/front-app" 
+- Installer environnement node.js
+```
+curl https://get.volta.sh | bash
+```
+
 - Installer les dépendences
 ```
 npm i
