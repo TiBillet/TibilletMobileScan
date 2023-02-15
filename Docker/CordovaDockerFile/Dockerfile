@@ -63,8 +63,10 @@ WORKDIR /
 # projet
 RUN cordova create mobile-app re.tibillet.tibilletmobile TibilletMobile \
     && cd mobile-app \
-    && cordova plugin add phonegap-nfc \
+    && cordova plugin add cordova-plugin-android-permissions \
     && cordova plugin add cordova-plugin-device \
+    && cordova plugin add phonegap-nfc \
+    && cordova plugin add cordova-plugin-network-information \
     && cordova platform add android@11.0.0 \
     && cordova platform add browser@6.0.0
 

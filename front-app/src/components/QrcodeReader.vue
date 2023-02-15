@@ -1,11 +1,11 @@
 <template>
-  <v-card max-width="400" >
+  <v-card class="mx-auto mb-3" max-width="400">
     <v-card-text class="d-flex flex-column justify-space-between align-center">
       <v-icon icon="mdi-qrcode-scan" color="primary" size="150" @click="activeDialogQrCode()"></v-icon>
       <h2 class="text-h6">{{ message }}</h2>
     </v-card-text>
   </v-card>
-  <v-dialog v-model="dialogQrCode" v-bind="checkPermissionCamera()">
+  <v-dialog v-model="dialogQrCode" v-bind="checkPermissionCamera()" class="mx-auto" max-width="400">
     <v-card>
       <v-card-title>{{ message }}</v-card-title>
       <v-card-text class="d-flex flex-column align-center justify-center">

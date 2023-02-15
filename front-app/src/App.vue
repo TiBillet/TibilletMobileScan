@@ -11,12 +11,13 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-app :theme="theme">
+  <v-app>
     <router-view/>
   </v-app>
 </template>
 
 <script setup>
+console.log('-> App.vue')
 // composants
 import Loading from '@/components/Loading.vue'
 
@@ -25,6 +26,7 @@ import {io} from 'socket.io-client'
 import {tradConfig, trad} from '@/communs/translation.js'
 import {storeToRefs} from 'pinia'
 import {useLocalStore} from '@/store'
+import { useTheme } from 'vuetify'
 
 const {loading} = storeToRefs(useLocalStore())
 const serverSocketIo = import.meta.env.VITE_API_URL_BASE
@@ -35,9 +37,8 @@ const store = useLocalStore()
 store.$reset()
 
 const {getLanguage} = store
+const theme = useTheme()
 
-// ref
-let theme = ref('light')
 let messageModal = ref({
   activation: false,
   color: 'primary',
@@ -54,7 +55,7 @@ document.body.addEventListener('modal-message', (data) => {
 })
 
 document.body.addEventListener('change-theme-input', (data) => {
-  theme.value = theme.value === 'light' ? 'dark' : 'light'
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 })
 
 

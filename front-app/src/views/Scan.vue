@@ -1,15 +1,11 @@
 <template>
-  <v-main>
-    <v-container fluid>
-      <QrcodeReader :message="trad('Qrcode Ticket Scanner.')" @some-qr-code="recepQrCode" class="mb-3"/>
-      <NfcReader :message="trad('Scanner nfc card.')" image-url='./images/nfc.svg' @some-tag-id="recepTagId"/>
-    </v-container>
-  </v-main>
-  <v-footer class="d-flex flex-column">
+  <v-container fluid class="d-flex flex-column align-center justify-center" style="height: 95vh;">
+    <QrcodeReader :message="trad('Qrcode Ticket Scanner.')" @some-qr-code="recepQrCode"/>
+    <NfcReader :message="trad('Scanner nfc card.')" image-url='./images/nfc.svg' @some-tag-id="recepTagId"/>
     <v-btn class="menu-btn" to="menu" color="primary" width="46vh" height="10vh" text-transform="uppercase">
       {{ trad("Return") }}
     </v-btn>
-  </v-footer>
+  </v-container>
 </template>
 
 <script setup>

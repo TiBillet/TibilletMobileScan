@@ -3,7 +3,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 const routes = [
   {
     path: '/index.html',
-    component: () => import('@/layouts/input/Input.vue'),
+    component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
         path: '',
@@ -15,7 +15,7 @@ const routes = [
   },
   {
     path: '/keycard',
-    component: () => import('@/layouts/input/Input.vue'),
+    component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
       path: '',
@@ -31,15 +31,23 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Menu',
+        name: 'menu',
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "Menu" */ '@/views/Menu.vue')
-      },
-    ],
+      }
+    ]
   },
   {
     path: '/scan',
-    component: () => import(/* webpackChunkName: "Scan" */ '@/views/Scan.vue')
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'scan',
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "Menu" */ '@/views/Scan.vue')
+      }
+    ]
   },
   {
     path: '/ticketstatus',

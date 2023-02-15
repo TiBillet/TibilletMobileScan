@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex flex-column align-center justify-center h-100">
+  <v-container fluid class="d-flex flex-column align-center justify-center" style="height: 100%;">
 
     <v-btn class="mt-4 mb-4" color="primary" width="46vh" height="10vh" text-transform="uppercase">
       <div class="text-wrap text-center text-h5">{{ trad("Create a new member.") }}</div>

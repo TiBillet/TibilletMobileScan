@@ -1,11 +1,7 @@
 <template>
-  <v-main>
-    <v-container fluid class="h-100">
-      <v-row justify="center" align="center" class="h-100">
+    <v-container fluid class="d-flex flex-column align-center justify-center" style="height: 95vh;">
       <NfcReader :message="trad('Scan your primary card.')" @some-tag-id="recepTagId"/>
-        </v-row>
     </v-container>
-  </v-main>
 </template>
 
 <script setup>

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="400">
+  <v-card class="mx-auto mb-3" max-width="400">
     <v-card-text class="d-flex flex-column justify-center align-center">
       <v-chip-group v-if="getDeviceNfc.type === 'simu'" v-model="selectionCard.value" selected-class="text-primary"
                     mandatory>

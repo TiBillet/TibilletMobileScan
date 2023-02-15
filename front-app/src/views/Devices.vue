@@ -1,31 +1,54 @@
 <template>
-  <v-main>
-    <v-container fluid class="text-center">
+  <!--  <v-container fluid class="d-flex flex-column align-center justify-center" style="height: 95vh;">-->
+  <v-container fluid fill-height>
+    <v-row justify="center">
+      <h2 class="mb-4">{{ trad('Devices') }}</h2>
+    </v-row>
+    <v-row v-for="(item, index) in devices" :key="index" justify="center" class="pa-2 my-2">
+      <v-sheet width="400" class="pa-2">
+        <v-row>
+          <v-col cols="1">
+            <v-icon :icon="getIcon(item)" :color="item.activation === true ? 'green' : 'red'"></v-icon>
+          </v-col>
+          <v-col>
+            <h3 class="">{{ trad(index) }}</h3>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="1" ></v-col>
+          <v-col class="pt-0">
+            <div>{{ item.text }}</div>
+          </v-col>
+        </v-row>
+      </v-sheet>
+    </v-row>
 
-      <h2 class="mb-4">{{ trad('Check the devices') }}</h2>
-      <!-- devices -->
-      <v-timeline  side="end" align="start">
-        <v-timeline-item v-for="(item, index) in devices" :key="index"
-                         :dot-color="item.activation === true ? 'green' : 'red'">
-          <template v-slot:icon>
-            <v-icon :icon="getIcon(item)"></v-icon>
-          </template>
-          <div>
-            <div class="text-h6">{{ trad(index) }}</div>
-            <p>
-              {{ item.text }}
-            </p>
-          </div>
-        </v-timeline-item>
-      </v-timeline>
-
-       <v-progress-circular :color="color" indeterminate size="100" width="8" class="mt-4">
+    <v-row justify="center">
+      <v-progress-circular :color="color" indeterminate size="100" width="8" class="mt-4">
         <div class="d-flex flex-column align-center">
           <v-icon icon="mdi-cog-outline" size="64"></v-icon>
         </div>
       </v-progress-circular>
-    </v-container>
-  </v-main>
+    </v-row>
+    <!-- devices -->
+    <!--
+    <v-timeline side="end" align="start" style="height: 50vh;">
+      <v-timeline-item v-for="(item, index) in devices" :key="index"
+                       :dot-color="item.activation === true ? 'green' : 'red'">
+        <template v-slot:icon>
+          <v-icon :icon="getIcon(item)"></v-icon>
+        </template>
+        <div>
+          <div class="text-h6">{{ trad(index) }}</div>
+          <p>
+            {{ item.text }}
+          </p>
+        </div>
+      </v-timeline-item>
+    </v-timeline>
+-->
+
+  </v-container>
 </template>
 
 <script setup>
@@ -73,7 +96,6 @@ function getIcon(item) {
   return item.icons[index]
 }
 
-// route
 function testAllDevicesEnabled() {
   const devicesValues = devices.value
   const nbTotalActivationFind = Object.keys(devicesValues).length
@@ -88,7 +110,7 @@ function testAllDevicesEnabled() {
   if (nbTotalActivationFind === nbTotalActivationTest) {
     // save state devices
     updateDevices(devices.value)
-    // lancer l'application
+    // lancer l'application une fois les périphériques activés
     router.push('/keycard')
   }
 
@@ -165,7 +187,9 @@ function informedNfcMobileActivationNone(error) {
   deviceNfc.nbTest = deviceNfc.nbTest + 1
 
   // TODO: insérer un bouton pour afficher la vue d'activation du nfc
-  // if (deviceNfc.nbTest === 1) { nfc.showSettings() }
+  if (deviceNfc.nbTest === 1) {
+    nfc.showSettings()
+  }
 
   if (deviceNfc.nbTest < 250) {
     setTimeout(() => {
@@ -195,9 +219,20 @@ function checkNfc(device) {
   }
 }
 
+function requestPermissionSuccessInternet() {
+  console.log('-> internet ok')
+}
+
+function requestPermissionErrorInternet(error) {
+  console.log('-> internet,', console.log('-> internet ok'))
+}
 
 // --- network ---
 function offline(device) {
+  const permissions = cordova.plugins.permissions
+  permissions.requestPermission(permissions.ACCESS_NETWORK_STATE, requestPermissionSuccessInternet, requestPermissionErrorInternet)
+
+
   const deviceNetwork = devices.value.Network
   deviceNetwork.activation = false
   deviceNetwork.text = trad('Activate your network.')
@@ -223,10 +258,13 @@ function online(device) {
 function testOnline(device) {
   let statusNetwork
   if (device === 'mobile') {
+    console.log('mobile - navigator =', navigator.connection.type)
     statusNetwork = navigator.connection.type
   } else { // desktop
     statusNetwork = navigator.onLine
   }
+
+  console.log('device =', device, '  --  statusNetwork =', statusNetwork)
 
   if (statusNetwork === 'none' || statusNetwork === false) {
     offline(device)
@@ -247,6 +285,7 @@ onMounted(() => {
   try {
     if (cordova) { // cordova / mobile
       document.addEventListener('deviceready', () => {
+        console.log('-> deviceready !')
         Tests('mobile')
       })
     }

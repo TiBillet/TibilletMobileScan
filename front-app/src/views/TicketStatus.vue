@@ -1,12 +1,10 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="d-flex align-center text-center fill-height">
+  <v-container fluid class="d-flex flex-column align-center justify-center" style="height: 95vh;">
       <h1>Ticket status</h1>
 
-       <v-btn tile class="menu-btn" @click="router.push('/scan')">
+       <v-btn tile class="menu-btn" to="scan">
         {{ trad("New scan") }}
       </v-btn>
-    </v-responsive>
   </v-container>
 
 </template>
