@@ -31,6 +31,7 @@
     "vite-plugin-vuetify": "^1.0.0-alpha.12"
   },
   "volta": {
-    "node": "18.14.0"
+    "node": "18.14.0",
+    "npm": "9.2.0"
   }
 }
