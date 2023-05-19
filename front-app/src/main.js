@@ -10,7 +10,6 @@ import router from './router'
 import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
-
 // Plugins
 import {registerPlugins} from '@/plugins'
 
@@ -24,7 +23,6 @@ pinia.use(({store}) => {
 // données du store persistantes
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
-
 registerPlugins(app)
 
 app.mount('#app')

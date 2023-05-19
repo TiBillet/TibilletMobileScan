@@ -11,7 +11,7 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "core-js": "^3.27.2",
-    "html5-qrcode": "^2.3.4",
+    "html5-qrcode": "^2.3.7",
     "pinia": "^2.0.29",
     "pinia-plugin-persistedstate": "^3.0.2",
     "roboto-fontface": "*",

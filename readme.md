@@ -68,3 +68,21 @@ content:
   . 'self'   
   . https://fonts.googleapis.com/
   . 'unsafe-inline' = le style codé dans une feuille de style chargé
+
+## Divers
+### Créer un projet vue avec vite
+```
+npm create vite@latest front-vue -- --template vue
+```
+
+### storybook
+#### Installation (zero-config setup)
+Dans le dossier root de l'application vue
+```
+npx sb init
+```
+
+#### Démarrage
+```
+npm run storybook
+```

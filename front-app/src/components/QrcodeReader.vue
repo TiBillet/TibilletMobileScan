@@ -5,20 +5,24 @@
       <h2 class="text-h6">{{ message }}</h2>
     </v-card-text>
   </v-card>
-  <v-dialog v-model="dialogQrCode" v-bind="checkPermissionCamera()" class="mx-auto" max-width="400">
+  <!--  <v-dialog v-model="dialogQrCode" v-bind="checkPermissionCamera()" class="mx-auto" max-width="400">-->
+  <!--  <v-dialog v-model="dialogQrCode" class="mx-auto" max-width="400">
     <v-card>
       <v-card-title>{{ message }}</v-card-title>
       <v-card-text class="d-flex flex-column align-center justify-center">
-        <div style="width: 300px" id="reader"></div>
+        <div style="width: 300px" id="qr-reader"></div>
       </v-card-text>
     </v-card>
-  </v-dialog>
+  </v-dialog> -->
+  <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
 
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import {Html5Qrcode} from "html5-qrcode"
+import {watch, onMounted, ref} from 'vue'
+// import {Html5Qrcode} from 'html5-qrcode'
+import '@/communs/zxing-0.19.2.min.js'
+
 
 const props = defineProps({
   message: String
@@ -28,11 +32,28 @@ let dialogQrCode = ref(false)
 const emits = defineEmits(['someQrCode'])
 let html5QrCode, cible
 
-
 function activeDialogQrCode() {
+  console.log('.. fonction activeDialogQrCode !')
   dialogQrCode.value = true
 }
 
+
+async function getMedia() {
+  const constraints = {
+    audio: false,
+    video: {width: 350, height: 350}
+  }
+  try {
+    return await navigator.mediaDevices.getUserMedia(constraints)
+
+  } catch (err) {
+    console.log('getMedia, ', err)
+    return null
+  }
+}
+
+
+/*
 function stopScanQrCode() {
   html5QrCode.stop().then(ignore => {
     // QR Code scanning is stopped.
@@ -51,64 +72,143 @@ function onScanSuccess(qrCodeMessage, decodedResult) {
   emits('someQrCode', qrCodeMessage)
 }
 
+
+// wait element #reader is in dom
+function testVdialogOpen() {
+   console.log('2 -> testVdialogOpen')
+  setTimeout(() => {
+    const refReader = document.querySelector('#reader')
+    if (refReader === null) {
+      testVdialogOpen()
+    } else {
+      try {
+        if (cordova) {
+          cible = 250
+        }
+      } catch (e) {
+        cible = 150
+      }
+      console.log('cible =', cible)
+      scanQrCode()
+    }
+  }, 1000)
+}
+
+watch(dialogQrCode,
+  (value) => {
+    console.log('1 -> watch')
+    if (value) {
+      document.addEventListener('deviceready', testVdialogOpen, false)
+    }
+  }
+)
+*/
+
+/*
+
+function onScanFailure(error) {
+  // handle scan failure, usually better to ignore and keep scanning.
+  // for example:
+  console.warn(`Code scan error = ${error}`);
+}
+
+function onScanSuccess(decodedText, decodedResult) {
+  // handle the scanned code as you like, for example:
+  console.log(`Code matched = ${decodedText}`, decodedResult);
+}
+
 function scanQrCode() {
-  console.log('-> lecteur qrCode lancé !')
-  html5QrCode = new Html5Qrcode("reader")
-  const config = {fps: 10, qrbox: {width: cible, height: cible}};
+  console.log('3 -> scanQrCode')
+  try {
+    console.log('-> lecteur qrCode lancé !')
+    html5QrCode = new Html5Qrcode("qr-reader")
+    console.log('html5QrCode instancié.')
+    const config = {fps: 10, qrbox: {width: cible, height: cible}};
 
-  // caméra arrière = "environment"
-  html5QrCode.start({facingMode: "environment"}, config, onScanSuccess)
-}
-
-
-function checkPermissionCameraDesktop() {
-  console.log('-> checkPermissionCameraDesktop !')
-  navigator.mediaDevices.getUserMedia({audio: false, video: true}).then(function (stream) {
-    scanQrCode()
-  }).catch(function (error) {
-    console.log('Camera:', error)
-  })
-}
-
-function requestPermissionError() {
-  console.warn('Camera permission is not turned on')
-  dialogQrCode.value = false
-}
-
-function requestPermissionSuccess(status) {
-  if (!status.hasPermission) {
-    requestPermissionError()
-  } else {
-    scanQrCode()
+    // caméra arrière = "environment"
+    html5QrCode.start({facingMode: "environment"}, config, onScanSuccess)
+  } catch (e) {
+    console.log('scanQrCode, ', e)
   }
 }
 
-function checkPermissionCameraMobile() {
-  // console.log('-> checkPermissionCameraMobilecordova !')
-  const permissions = cordova.plugins.permissions
-  permissions.checkPermission(permissions.CAMERA, function (status) {
-    // console.log('status.hasPermission =', status.hasPermission)
-    if (status.hasPermission === true) {
-      scanQrCode()
-    } else {
-      permissions.requestPermission(permissions.CAMERA, requestPermissionSuccess, requestPermissionError)
+function requestPermissionErrorCamera() {
+  const deviceCamera = devices.value.Camera
+  deviceCamera.activation = false
+  deviceCamera.text = trad('Camera locked in !')
+}
+
+function requestPermissionSuccessCamera(status) {
+  if (!status.hasPermission) {
+    scanQrCode()
+  } else {
+    console.log('status =', status)
+  }
+}
+*/
+
+function decodeOnce(codeReader, selectedDeviceId) {
+      codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
+        console.log(result.text)
+      }).catch((err) => {
+        console.error(err)
+
+      })
     }
+
+
+function waitTagQrReaderOn(device) {
+  /*
+  setTimeout(() => {
+    const refReader = document.querySelector('#qr-reader')
+    if (refReader === null) {
+      console.log('-> element reader pas visible !')
+      waitTagQrReaderOn()
+    } else {
+      console.log('-> element reader visible !')
+      try {
+        if (device === 'mobile') {
+          const permissions = cordova.plugins.permissions
+          permissions.requestPermission(permissions.CAMERA, requestPermissionSuccessCamera, requestPermissionErrorCamera)
+        } else {
+          scanQrCode()
+        }
+      } catch (e) {
+        console.log('waitTagQrReaderOn,', e)
+      }
+    }
+  }, 1000)
+
+   */
+  let selectedDeviceId;
+  const codeReader = new ZXing.BrowserQRCodeReader()
+  console.log('ZXing code reader initialized')
+
+  codeReader.getVideoInputDevices().then((videoInputDevices) => {
+    // console.log('videoInputDevices =', videoInputDevices)
+    let indexCam = 0
+    // camera back
+    if(device === 'mobile') {
+      indexCam = 1
+    }
+    const selectedDeviceId = videoInputDevices[indexCam].deviceId
+    decodeOnce(codeReader, selectedDeviceId)
   })
 }
 
-function checkPermissionCamera() {
-  // console.log('-> checkPermissionCamera !')
+
+onMounted(() => {
   try {
     if (cordova) {
       cible = 250
-      checkPermissionCameraMobile()
+      waitTagQrReaderOn('mobile')
     }
   } catch (e) {
+    // console.log('scan qr codes,', e)
     cible = 150
-    checkPermissionCameraDesktop()
+    waitTagQrReaderOn('desktop')
   }
-}
-
+})
 </script>
 
 <style scoped>
